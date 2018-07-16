@@ -1,0 +1,29 @@
+.header {
+  font-size: 2rem;
+}
+
+.optionsButton {
+  float: right;
+  height: 24px;
+}
+.optionsButtonImage {
+  font-size: 14px;
+}
+.jobsContainer {
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+}
+.stateImage {
+  width: 24px;
+  height: 24px;
+}
+
+.loader {
+  animation: spin 2s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

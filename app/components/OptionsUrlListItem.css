@@ -1,0 +1,20 @@
+.closeButton {
+    position: relative;
+    float: right;
+    padding: 4px;
+    font-size: 16px;
+    background: transparent;
+    border-color: transparent;
+}
+
+.urlCard {
+    margin-bottom: 16px;
+}
+
+.urlContent {
+    padding-top: 16px;
+}
+
+.errorText {
+    margin: 0px;
+}
