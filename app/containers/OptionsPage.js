@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import Options from '../components/Options';
 import * as OptionsActions from '../actions/options';
 
-function mapStateToProps() {
+function mapStateToProps(state) {
   return {
+    options: state.options,
   };
 }
 

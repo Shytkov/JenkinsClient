@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col } from 'reactstrap';
-import Settins from 'react-feather/dist/icons/settings';
+import Settings from 'react-feather/dist/icons/settings';
 import Loader from 'react-feather/dist/icons/loader';
 
 
@@ -73,7 +73,7 @@ export default class Home extends Component<Props> {
               <Col xs="auto">{loading}</Col>
               <Col>
                 <Link className={`${styles.optionsButton}`} data-toggle="tooltip" data-placement="top" title="Open Settings" to="/options">
-                  <Settins size={24} />
+                  <Settings size={24} />
                 </Link>
               </Col>
             </Row>

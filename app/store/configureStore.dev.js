@@ -2,8 +2,6 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'react-router-redux';
-import axios from 'axios';
-import axiosMiddleware from 'redux-axios-middleware';
 import { createLogger } from 'redux-logger';
 import rootReducer from '../reducers';
 import * as optionsActions from '../actions/options';
@@ -45,15 +43,6 @@ const createEnhancers = () => {
     /* eslint-enable no-underscore-dangle */
 }
 
-// const createAxios = () => {
-
-//   const client = axios.create({
-//     baseURL:'http://localhost:5000/',
-//     responseType: 'json'
-//   });
-//   return axiosMiddleware(client);
-// }
-
 const configureStore = (initialState?: storeStateType) => {
   // Redux Configuration
   const middleware = [];
@@ -66,13 +55,6 @@ const configureStore = (initialState?: storeStateType) => {
   // Router Middleware
   const router = routerMiddleware(history);
   middleware.push(router);
-
-  const client = axios.create({
-    baseURL:'http://localhost:5000/',
-    responseType: 'json'
-  });
-  const ax = axiosMiddleware(client);
-  middleware.push(ax);
 
   const composeEnhancers = createEnhancers();
 

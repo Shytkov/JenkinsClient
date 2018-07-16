@@ -7,6 +7,7 @@ import {
   Alert,
   CardSubtitle } from 'reactstrap';
 
+import Trash from 'react-feather/dist/icons/trash';
 import type { optionsUrlType } from '../types/options';
 import OptionsJobList from './OptionsJobList'
 import styles from './OptionsUrlListItem.css';
@@ -38,13 +39,15 @@ export default class OptionsUrlListItem extends Component<Props> {
       <Card className={styles.urlCard}>
         <CardBody>
           <CardTitle> 
-            <span>{this.props.item.name}</span>
+            <span className={styles.cardTitle}>{this.props.item.name}</span>
             <span
-              className={`${styles.closeButton} btn btn-light oi oi-x`}
+              className={`btn btn-light ${styles.closeButton}`}
               title="person"
               aria-hidden="true"
               onClick={this.props.delete}
-            />
+            >
+              <Trash />
+            </span>
           </CardTitle>
           <CardSubtitle>{subTitle}</CardSubtitle>
           <div className={styles.urlContent}>

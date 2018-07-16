@@ -1,9 +1,12 @@
-import JenkinsApi from "../utils/JenkinsApi";
+import Store from 'electron-store';
+import JenkinsApi from '../utils/JenkinsApi';
+import type { optionsStateType } from '../types/options';
 
 // @flow
 export const ADD_URL = 'ADD_URL';
 export const DELETE_URL = 'DELETE_URL';
 export const LOAD_JOBS = 'LOAD_JOBS';
+export const SAVE_OPTIONS = 'SAVE_OPTIONS';
 export const LOAD_JOBS_SUCCESS = 'LOAD_JOBS_SUCCESS';
 export const LOAD_JOBS_FAILURE = 'LOAD_JOBS_FAILURE';
 export const JOB_CHECK_CHANGED = 'JOB_CHECK_CHANGED';
@@ -20,6 +23,23 @@ export function deleteUrl(i: number) {
     type: DELETE_URL,
     payload: i
   };
+}
+
+const store = new Store({
+  name: 'jenkinsClient',
+});
+
+export function saveOptions(options: optionsStateType) {
+  console.log(`SAVE OPTIONS to ${store.path}`);
+  store.set('options', options);
+  return {
+    type: SAVE_OPTIONS
+  };
+}
+
+export function loadOptions() {
+  console.log(`LOAD OPTIONS from ${store.path}`);
+  return store.get('options');
 }
 
 export function loadJobs(url: string, index: number) {

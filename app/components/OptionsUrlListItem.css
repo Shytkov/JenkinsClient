@@ -1,10 +1,15 @@
 .closeButton {
     position: relative;
     float: right;
-    padding: 4px;
-    font-size: 16px;
-    background: transparent;
-    border-color: transparent;
+    padding: 4px 8px !important;
+    background: transparent !important;
+    border-color: transparent !important;
+}
+
+.cardTitle {
+    display: inline-block;
+    width: 85%;
+    word-break: break-all;
 }
 
 .urlCard {
@@ -16,5 +21,5 @@
 }
 
 .errorText {
-    margin: 0px;
+    margin: 0px !important;
 }

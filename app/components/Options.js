@@ -4,9 +4,12 @@ import { Link } from 'react-router-dom';
 import { Form, FormGroup, Label, Button, InputGroup, Input, InputGroupAddon } from 'reactstrap';
 import OptionsUrlListComponent from '../containers/OptionsUrlListComponent';
 import Utils from '../utils/Utils';
+import type { optionsStateType } from '../types/options';
 
 type Props = {
-  addUrl: (url: string) => void
+  options: optionsStateType,
+  addUrl: (url: string) => void,
+  saveOptions: () => void
 };
 
 export default class Options extends Component<Props> {
@@ -19,10 +22,13 @@ export default class Options extends Component<Props> {
     };
   }
 
-  addUrlHandler() {
-
+  addUrl() {
     this.props.addUrl(this.urlInput.value);
     this.urlInput.value = '';
+  }
+
+  saveOptions() {
+    this.props.saveOptions(this.props.options);
   }
 
   urlInputChange() {
@@ -49,12 +55,12 @@ export default class Options extends Component<Props> {
           <InputGroup>
             <Input invalid={!this.state.urlValid} innerRef={(ref) => this.urlInput = ref} onChange={this.urlInputChange.bind(this)} />
             <InputGroupAddon addonType="append">
-              <Button color="primary" disabled={this.addButtonDisabled()} onClick={this.addUrlHandler.bind(this)}>Add</Button>
+              <Button color="primary" disabled={this.addButtonDisabled()} onClick={this.addUrl.bind(this)}>Add</Button>
             </InputGroupAddon>
           </InputGroup>
         </FormGroup>
         <OptionsUrlListComponent />
-        <Link className="btn btn-primary" to="/">Save</Link>
+        <Link className="btn btn-primary" onClick={this.saveOptions.bind(this)} to="/">Save</Link>
       </Form>
     );
   }

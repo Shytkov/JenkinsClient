@@ -8,7 +8,7 @@ import type { homeStateType } from '../types/home';
 const defaultState = {
   loading: false,
   jobs: []
-}
+};
 
 const reloadJobs = (state: homeStateType, action: actionType) => {
   const {
@@ -43,7 +43,7 @@ const reloadJobs = (state: homeStateType, action: actionType) => {
   };
 }
 
-const updateJobs = (state: homeStateType, action: actionType) => {
+const updateJobs = (state: homeStateType) => {
 
   return {
     ...state,
