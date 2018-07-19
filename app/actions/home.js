@@ -1,7 +1,7 @@
 // @flow
 import { jobType } from "../types/home";
 import type { optionsStateType } from '../types/options';
-import JenkinsApi from "../utils/JenkinsApi";
+import Api from "../utils/Api";
 
 export const RELOAD_JOBS = 'RELOAD_JOBS';
 export const UPDATE_JOBS = 'UPDATE_JOBS';
@@ -23,9 +23,8 @@ export function updateJobs(jobs: Array<jobType>) {
     const promises = [];
 
     jobs.forEach(job => {
-      const jenkinsApi = new JenkinsApi(job.url);
       promises.push(
-        jenkinsApi.getJobAsync(job.name)
+        Api.getJobAsync(job.name, job.url)
                   .then((response) => {
                     updatedJobs.push({
                       ...job,

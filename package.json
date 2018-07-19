@@ -42,7 +42,7 @@
   },
   "build": {
     "productName": "ElectronJenkins",
-    "appId": "org.devart.ElectronJenkins",
+    "appId": "com.devart.ElectronJenkins",
     "files": [
       "dist/",
       "node_modules/",
@@ -50,6 +50,10 @@
       "main.prod.js",
       "main.prod.js.map",
       "package.json"
+    ],
+    "extraFiles": [
+      "app/dist/netcoreapp2.0/publish/*",
+      "!app/dist/netcoreapp2.0/publish/*.pdb"
     ],
     "dmg": {
       "contents": [

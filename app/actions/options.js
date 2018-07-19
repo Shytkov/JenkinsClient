@@ -1,5 +1,5 @@
 import Store from 'electron-store';
-import JenkinsApi from '../utils/JenkinsApi';
+import Api from '../utils/Api';
 import type { optionsStateType } from '../types/options';
 
 // @flow
@@ -47,19 +47,18 @@ export function loadJobs(url: string, index: number) {
   return dispatch => {
     dispatch(getLoadJobsAction(index));
     let name = url;
-    const jenkinsApi = new JenkinsApi(url);
-    jenkinsApi.getMasterAsync()
-              .then((response) => {
-                name = response.data.Name;
-                return jenkinsApi.getJobsAsync();
-              })
-              .then((response) => {
-                dispatch(getLoadJobsSuccessAction(index, name, response.data))
-                return null;
-              })
-              .catch((error) => {
-                dispatch(getLoadJobsFailureAction(index, error))
-              });
+    Api.getMasterAsync(url)
+       .then((response) => {
+         name = response.data.Name;
+         return Api.getJobsAsync(url);
+       })
+       .then((response) => {
+         dispatch(getLoadJobsSuccessAction(index, name, response.data))
+         return null;
+       })
+       .catch((error) => {
+         dispatch(getLoadJobsFailureAction(index, error))
+       });
   };
 }
 

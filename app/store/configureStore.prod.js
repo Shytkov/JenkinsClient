@@ -12,6 +12,7 @@ const router = routerMiddleware(history);
 const enhancer = applyMiddleware(thunk, router);
 
 function configureStore(initialState?: storeStateType) {
+  console.log('CREATE STORE', history);
   return createStore(rootReducer, initialState, enhancer);
 }
 

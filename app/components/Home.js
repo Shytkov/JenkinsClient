@@ -23,7 +23,6 @@ type Props = {
 export default class Home extends Component<Props> {
 
   componentDidMount() {
-    this.forceUpdate = true;
     this.props.reloadJobs(this.props.options);
   }
 

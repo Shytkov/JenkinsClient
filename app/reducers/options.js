@@ -6,22 +6,9 @@ import type { actionType } from '../types/basic';
 import type { optionsStateType, optionsUrlType } from '../types/options';
 import Utils from '../utils/Utils';
 
-let defaultState;
-
-const getDefaultState = () => {
-  if(defaultState) {
-    return defaultState;
-  }
-
-  defaultState = Actions.loadOptions();
-  if(!defaultState) {
-    defaultState = {
-      urls: []
-    };
-  }
-
-  return defaultState;
-}
+let defaultState = {
+  urls: []
+};
 
 const addUrl = (state: optionsStateType, action: actionType) => {
   console.log("ADD_URL", action);
@@ -128,7 +115,7 @@ const jobCheckChanged = (state: optionsStateType, action: actionType) => {
 }
 
 export default function optionsReducer(
-  state: optionsStateType = getDefaultState(),
+  state: optionsStateType = defaultState,
   action: actionType
 ) {
   console.log('Options Reducer', action);
