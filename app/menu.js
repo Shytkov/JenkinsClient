@@ -9,13 +9,8 @@ export default class MenuBuilder {
   }
 
   buildMenu() {
-    if (
-      process.env.NODE_ENV === 'development' ||
-      process.env.DEBUG_PROD === 'true'
-    ) {
-      this.setupDevelopmentEnvironment();
-    }
 
+    this.setupDevelopmentEnvironment();
     const template = process.platform === 'darwin'
       ? this.buildDarwinTemplate()
       : this.buildDefaultTemplate();
@@ -69,6 +64,7 @@ export default class MenuBuilder {
           label: 'Quit',
           accelerator: 'Command+Q',
           click: () => {
+            app.isQuiting = true;
             app.quit();
           }
         }
@@ -112,18 +108,6 @@ export default class MenuBuilder {
           accelerator: 'Alt+Command+I',
           click: () => {
             this.mainWindow.toggleDevTools();
-          }
-        }
-      ]
-    };
-    const subMenuViewProd = {
-      label: 'View',
-      submenu: [
-        {
-          label: 'Toggle Full Screen',
-          accelerator: 'Ctrl+Command+F',
-          click: () => {
-            this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
           }
         }
       ]
@@ -173,8 +157,7 @@ export default class MenuBuilder {
       ]
     };
 
-    const subMenuView =
-      process.env.NODE_ENV === 'development' ? subMenuViewDev : subMenuViewProd;
+    const subMenuView = subMenuViewDev ;
 
     return [subMenuAbout, subMenuEdit, subMenuView, subMenuWindow, subMenuHelp];
   }

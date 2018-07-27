@@ -46,6 +46,23 @@ $ yarn
 ```
 **Note**: If you can't use [yarn](https://github.com/yarnpkg/yarn), run `npm install`.
 
+
+установка WinRT for notifications.
+copy file
+C:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.16299.0\Windows.winmd
+to
+C:\Program Files (x86)\Windows Kits\10\UnionMetadata
+
+// install tools and module
+npm install --global --production windows-build-tools
+npm install --save electron-windows-notifications
+
+// Complie native modules.
+npm install --save-dev electron-rebuild
+./node_modules/.bin/electron-rebuild
+
+
+
 ## Run
 
 Start the app in the `dev` environment. This starts the renderer process in [**hot-module-replacement**](https://webpack.js.org/guides/hmr-react/) mode and starts a webpack dev server that sends hot updates to the renderer process:

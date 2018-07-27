@@ -4,14 +4,10 @@ class JenkinsApi {
 
   constructor() {
     if(!JenkinsApi.instance){
+      this.baseUrl = 'http://localhost:5100';
       JenkinsApi.instance = this;
     }
     return JenkinsApi.instance;
-  }
-
-  initialize(url: string) {
-
-    this.baseUrl = url;
   }
 
   ping() {
@@ -31,7 +27,8 @@ class JenkinsApi {
   }
 
   getRequest(func, jenkinsUrl, param={}) {
-    const url = `${this.baseUrl}${func}`;
+
+    const url = `${this.baseUrl}/${func}`;
     const params = {
       ...param,
       jenkinsUrl

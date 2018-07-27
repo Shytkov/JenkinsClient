@@ -32,6 +32,7 @@ const reloadJobs = (state: homeStateType, action: actionType) => {
           joburl: '',
           health: -1,
           building: false,
+          lastBuild: null
         }
       );
     });

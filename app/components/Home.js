@@ -1,7 +1,8 @@
 // @flow
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col, Button } from 'reactstrap';
+
 import Settings from 'react-feather/dist/icons/settings';
 import Loader from 'react-feather/dist/icons/loader';
 
@@ -24,13 +25,27 @@ export default class Home extends Component<Props> {
 
   componentDidMount() {
     this.props.reloadJobs(this.props.options);
+
+    // const notification = new ToastNotification({
+    //   appId: 'com.devart.jenkinsclient',
+    //   template: `<toast><visual><binding template="ToastText01"><text id="1">%s</text></binding></visual></toast>`,
+    //   strings: ['Hi!']
+    // });
+    // notification.on('activated', () => console.log('Activated!'))
+    // notification.show();
+
+    
+    // const notification1 = {
+    //   title: 'Basic Notification',
+    //   body: 'Short message part'
+    // }
+    // const myNotification = new window.Notification(notification1.title, notification1)
   }
 
   componentDidUpdate() {
-    console.log('componentDidUpdate');
     if(this.props.jobs.length > 0 && !this.timerId) {
       this.props.updateJobs(this.props.jobs);
-      this.startTimer(20000); // 20 sec
+      this.startTimer(30000); // 30 sec
     }
   }
 
@@ -54,6 +69,18 @@ export default class Home extends Component<Props> {
       return;
     this.props.updateJobs(this.props.jobs);
   }
+
+  // grant() {
+  //   if(!window.Notification) {
+  //     console.log('Notifications are not supported.');
+  //   }
+  //   else {
+  //     Notification.requestPermission()
+  //                 .then((permition) => {
+  //                                        console.log('Notification permition:', permition);
+  //                                      });
+  //   }
+  // }
 
   render() {
     let loading = '';
@@ -79,6 +106,8 @@ export default class Home extends Component<Props> {
           </Container>
         </div>
         <HomeJobListContainer />
+        {/* <Button onClick={this.grant}>Grant</Button>
+        <Button onClick={this.notify}>Notify</Button> */}
       </div>
     );
   }

@@ -7,8 +7,8 @@
 
 body {
   position: relative;
-  height: 100vh;
+  height: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  overflow-y: hidden;
+  overflow-y: auto;
   padding: 24px;
 }

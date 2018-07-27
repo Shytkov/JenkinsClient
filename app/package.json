@@ -1,11 +1,11 @@
 {
-  "name": "jenkins-client",
-  "productName": "jenkins-client",
-  "version": "1.0.0",
+  "name": "electron-jenkins",
+  "productName": "ElectronJenkins",
+  "version": "1.0.3",
   "description": "Simple Jenkins Client on ElectronJS + .NET Core",
   "main": "./main.prod.js",
   "author": {
-    "name": "Pavel Shytkov",
+    "name": "PavelShytkov",
     "email": "shitkoff@gmail.com",
     "url": "https://github.com/shytkov"
   },

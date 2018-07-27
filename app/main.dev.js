@@ -10,7 +10,7 @@
  *
  * @flow
  */
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, Tray, Menu } from 'electron';
 import ChildProcess from 'child_process';
 import os from 'os';
 import path from 'path';
@@ -21,6 +21,7 @@ import * as Constants from './utils/Constants';
 
 
 let mainWindow = null;
+let tray = null;
 let apiProcess = null;
 let apiPort = 5100;
 
@@ -49,10 +50,20 @@ const getApiUrl = (port, func) => func ? `http://localhost:${port}/${func}` : `h
 
 const startApi = (port) => {
 
-  let apipath = path.join(__dirname, '.\\dist\\netcoreapp2.0\\CoreApi.dll');
-  if (os.platform() === 'darwin') {
-    apipath = path.join(__dirname, './dist//netcoreapp2.0//CoreApi.dll');
+  let apipath = '';
+  if(DEBUG) {
+    apipath = path.join(__dirname, '.\\dist\\netcoreapp2.0\\CoreApi.dll');
+    if (os.platform() === 'darwin') {
+      apipath = path.join(__dirname, './dist/netcoreapp2.0/CoreApi.dll');
+    }
   }
+  else {
+    apipath = path.join(__dirname, '..\\..\\app\\dist\\netcoreapp2.0\\publish\\CoreApi.dll');
+    if (os.platform() === 'darwin') {
+      apipath = path.join(__dirname, '../../app/dist/netcoreapp2.0/publish/CoreApi.dll');
+    }
+  }
+  console.log('START API:', apipath);
   return ChildProcess.spawn("dotnet", [apipath, "--server.urls", getApiUrl(port)]);
 }
 
@@ -95,7 +106,7 @@ const ipcListener = (event, args) => {
       .then((result) => {
         clearInterval(timer);
         console.log('API PING: SUCCESS');
-        mainWindow.webContents.send(Constants.INITIALIZE_API_CHANEL, Constants.INITIALIZE_API_CHANEL_DONE, 1111);
+        mainWindow.webContents.send(Constants.INITIALIZE_API_CHANEL, Constants.INITIALIZE_API_CHANEL_DONE, getApiUrl(apiPort));
       })
       .catch((error) => {
         console.log('API PING: ERROR');
@@ -108,10 +119,50 @@ const ipcListener = (event, args) => {
 
 }
 
-/**
- * Add event listeners...
- */
+const setAppUserModelId = () => {
 
+  const appUserModelId = 'com.squirrel.PavelShytkov.ElectronJenkins';
+  console.log('SET APP ID:', appUserModelId)
+  app.setAppUserModelId(appUserModelId);
+}
+
+const installTray = () => {
+
+  const iconName = process.platform === 'win32' ? 'windows-icon.png' : 'iconTemplate.png'
+  let iconPath = DEBUG ? path.join(__dirname, '..\\resources', iconName) : path.join(__dirname, '..\\', iconName)
+  if (os.platform() === 'darwin') {
+    iconPath = DEBUG ? path.join(__dirname, '../resources', iconName) : path.join(__dirname, '../', iconName)
+  }
+
+  console.log('INITIALIZE TRAY', iconPath);
+
+  const trayInstance = new Tray(iconPath);
+  const contextMenu = Menu.buildFromTemplate([
+     { 
+       label: 'Show', 
+       click: (item, window, event) => {
+         mainWindow.show();
+       }
+     },
+     {
+       label: 'Quit',
+       click: (item, window, event) => {
+        app.isQuiting = true;
+        app.quit();
+       }
+     } 
+  ]);
+  trayInstance.setToolTip('Devart JenkinsClient');
+  trayInstance.setContextMenu(contextMenu);
+
+  trayInstance.on('click', () => {
+    console.log('TRAY CLICK');
+    mainWindow.show();
+  });
+  return trayInstance;
+}
+
+// Add event listeners...
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
@@ -121,12 +172,18 @@ app.on('window-all-closed', () => {
 });
 
 app.on('browser-window-created', () => {
-  apiProcess = startApi(apiPort);
-  console.log('API START: pid=', apiProcess.pid, apiPort);
-  apiProcess.on('exit', (code) => {
-    console.error(`API EXIT: ${code}`);
-    apiProcess = null;
-  });
+
+  try {
+    apiProcess = startApi(apiPort);
+    console.log('API START: pid=', apiProcess.pid, apiPort);
+    apiProcess.on('exit', (code) => {
+      console.error(`API EXIT: ${code}`);
+      apiProcess = null;
+    });
+  } 
+  catch(error) {
+    console.error(error);
+  }
   ipcMain.on(Constants.INITIALIZE_API_CHANEL, ipcListener);
   console.log('IPC LISTENER SUBSCRIBED');
 });
@@ -137,12 +194,26 @@ app.on('ready', async () => {
     await installExtensions();
   }
 
-  mainWindow = new BrowserWindow({
-    show: false,
-    width: 1400,
-    height: 728
-  });
+  setAppUserModelId();
+  if(!tray) tray = installTray();
 
+  let options = {
+    show: false,
+    width: 500,
+    height: 700,
+    minWidth: 500,
+    minHeight: 700,
+    maximizable: false
+  };
+
+  if (DEBUG) {
+    options = {
+      show: false,
+      width: 1400,
+      height: 728
+    }
+  }
+  mainWindow = new BrowserWindow(options);
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
   // @TODO: Use 'ready-to-show' event
@@ -161,6 +232,24 @@ app.on('ready', async () => {
     mainWindow = null;
   });
 
-  const menuBuilder = new MenuBuilder(mainWindow);
-  menuBuilder.buildMenu();
+  mainWindow.on('minimize', (event) => {
+    event.preventDefault();
+    mainWindow.hide();
+  });
+  
+  mainWindow.on('close', (event) => {
+    console.log('APP QUIT', app.isQuiting);
+    if(!app.isQuiting){
+      event.preventDefault();
+      mainWindow.hide();
+    }
+    return false;
+  });
+
+  // if (DEBUG) {
+    const menuBuilder = new MenuBuilder(mainWindow);
+    menuBuilder.buildMenu();
+  // }
 });
+
+

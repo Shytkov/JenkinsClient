@@ -2,11 +2,16 @@
 import React, { Component } from 'react';
 import { ipcRenderer } from  'electron';
 import { Link } from 'react-router-dom';
+import { Card, CardBody, CardTitle, CardSubtitle, CardText } from 'reactstrap';
+import Api from '../utils/Api';
 import * as Constants from '../utils/Constants';
-import { resolve } from 'dns';
+import type { optionsStateType } from '../types/options';
 
 type Props = {
-  goHome: (history) => void
+  options: optionsStateType,
+  goHome: (history) => void,
+  pingApi: () => void,
+  loadOptions: () => void
 };
 
 export default class Loading extends Component<Props> {
@@ -20,9 +25,7 @@ export default class Loading extends Component<Props> {
     ipcRenderer.on(Constants.INITIALIZE_API_CHANEL, this.ipcListenerHandler)
 
     this.setLoadingState('Initialize application...');
-    this.pingAsync()
-        .then(() => this.loadOptionsAsync())
-        .then(() => this.goHome())
+    this.pingAsync();
   }
 
   componentWillUnmount() {
@@ -36,15 +39,21 @@ export default class Loading extends Component<Props> {
     })
   }
 
-  ipcListener(event, args) {
-    console.log(event, args);
-    if(args === Constants.INITIALIZE_API_CHANEL_START) {
+  ipcListener(event, name, arg) {
+    console.log(event, name, arg);
+
+    if(name === Constants.INITIALIZE_API_CHANEL_START) {
       console.log("INITIALIZE API: START");
     }
-    if(args === Constants.INITIALIZE_API_CHANEL_DONE) {
+    if(name === Constants.INITIALIZE_API_CHANEL_DONE) {
       console.log("INITIALIZE API: DONE");
+      // const apiUrl = arg;
+      // Api.initialize(apiUrl);
+
+      this.loadOptionsAsync()
+          .then(() => this.goHome())
     }
-    if(args === Constants.INITIALIZE_API_CHANEL_ERROR) {
+    if(name === Constants.INITIALIZE_API_CHANEL_ERROR) {
       this.errorText = 'Cannot start the application. Error: API initialization failed.';
       this.setLoadingState('Initialize API: Failed');
       console.error("INITIALIZE API: ERROR!");
@@ -52,38 +61,42 @@ export default class Loading extends Component<Props> {
   }
 
   pingAsync() {
-    this.setLoadingState('Initialize API...');
     return new Promise((resolve) => {
-      this.props.pingApi();
-      resolve();
+      this.setLoadingState('Initialize API...');
+      setTimeout(() => {
+        this.props.pingApi();
+        resolve();
+      }, 500);
     });
   }
 
   loadOptionsAsync() {
-    this.setLoadingState('Load options...');
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        console.log('LOAD OPTIONS');
-        resolve(true);
-      }, 2000);
+        this.setLoadingState('Load options...');
+        this.props.loadOptions(this.props.options);
+        resolve();
+      }, 500);
     });
   }
 
   goHome() {
-    // if(!this.props.errorText)
-    //   this.props.goHome(this.props.history)
+    if(!this.props.errorText)
+      this.props.goHome(this.props.history)
   }
 
   render() {
-    const error = this.errorText ? this.errorText : '';
+    const error = this.errorText ? (<CardText>{this.errorText}</CardText>) : '';
 
     if(this.state && this.state.loading)
       return (
-        <div>
-          <p>{this.state.loadingText}</p>
-          <p>{this.errorText}</p>
-        </div>);
-
-    return ( <div>done...</div> );
+        <Card>
+          <CardBody>
+            <CardTitle>Loading...</CardTitle>
+            <CardSubtitle>{this.state.loadingText}</CardSubtitle>
+            {error}
+          </CardBody>
+        </Card>);
+    return ( '' );
   }
 }

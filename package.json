@@ -1,8 +1,8 @@
 {
-  "name": "electron-react-boilerplate",
-  "productName": "ElectronReact",
-  "version": "0.13.3",
-  "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
+  "name": "electron-jenkins",
+  "productName": "ElectronJenkins",
+  "version": "1.0.3",
+  "description": "Simple Jenkins Client on ElectronJS + .NET Core",
   "scripts": {
     "build": "concurrently \"npm run build-main\" \"npm run build-renderer\"",
     "build-dll": "cross-env NODE_ENV=development node --trace-warnings -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.renderer.dev.dll.js --colors",
@@ -42,7 +42,7 @@
   },
   "build": {
     "productName": "ElectronJenkins",
-    "appId": "com.devart.ElectronJenkins",
+    "appId": "com.squirrel.PavelShytkov.ElectronJenkins",
     "files": [
       "dist/",
       "node_modules/",
@@ -52,8 +52,9 @@
       "package.json"
     ],
     "extraFiles": [
-      "app/dist/netcoreapp2.0/publish/*",
-      "!app/dist/netcoreapp2.0/publish/*.pdb"
+      "app/dist/netcoreapp2.0/publish/**",
+      "!app/dist/netcoreapp2.0/publish/*.pdb",
+      "resources/*.png"
     ],
     "dmg": {
       "contents": [
@@ -88,16 +89,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chentsulin/electron-react-boilerplate.git"
+    "url": "git+https://github.com/Shytkov/JenkinsClient"
   },
   "author": {
-    "name": "Devart LLC",
-    "email": "electronJenkins@devart.com",
-    "url": "https://github.com/chentsulin"
+    "name": "PavelShytkov",
+    "email": "shitkoff@gmail.com",
+    "url": "https://github.com/Shytkov"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/chentsulin/electron-react-boilerplate/issues"
+    "url": "https://github.com/Shytkov/JenkinsClient/issues"
   },
   "keywords": [
     "jenkins",
@@ -111,7 +112,7 @@
     "hot",
     "reload"
   ],
-  "homepage": "https://github.com/chentsulin/electron-react-boilerplate#readme",
+  "homepage": "https://github.com/Shytkov/JenkinsClient#readme",
   "jest": {
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/internals/mocks/fileMock.js",
@@ -155,7 +156,7 @@
     "electron": "^2.0.2",
     "electron-builder": "^20.14.7",
     "electron-devtools-installer": "^2.2.4",
-    "electron-rebuild": "^1.7.3",
+    "electron-rebuild": "^1.8.1",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.4",
@@ -183,6 +184,7 @@
     "jest": "^23.0.0",
     "lint-staged": "^7.1.2",
     "minimist": "^1.2.0",
+    "node-loader": "^0.6.0",
     "node-sass": "^4.9.0",
     "npm-logical-tree": "^1.2.1",
     "prettier": "^1.12.1",
@@ -210,6 +212,7 @@
     "devtron": "^1.4.0",
     "electron-debug": "^1.5.0",
     "electron-store": "^2.0.0",
+    "electron-windows-notifications": "^2.1.1",
     "font-awesome": "^4.7.0",
     "history": "^4.7.2",
     "jquery": "^3.3.1",
@@ -226,7 +229,7 @@
     "reactstrap": "^6.1.0",
     "redux": "^4.0.0",
     "redux-axios-middleware": "^4.0.0",
-    "redux-thunk": "^2.2.0",
+    "redux-thunk": "^2.3.0",
     "source-map-support": "^0.5.6"
   },
   "devEngines": {

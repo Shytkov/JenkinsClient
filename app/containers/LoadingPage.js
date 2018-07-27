@@ -6,7 +6,7 @@ import * as LoadingActions from '../actions/loading';
 
 function mapStateToProps(state) {
   return {
-    options: state.options,
+    options: state.options
   };
 }
 

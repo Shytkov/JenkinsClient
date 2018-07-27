@@ -1,6 +1,7 @@
 // @flow
 import update from 'react-addons-update';
 import * as Actions from '../actions/options';
+import * as LoadingActions from '../actions/loading';
 
 import type { actionType } from '../types/basic';
 import type { optionsStateType, optionsUrlType } from '../types/options';
@@ -133,6 +134,8 @@ export default function optionsReducer(
       return loadJobsFailure(state, action);
     case Actions.JOB_CHECK_CHANGED:
       return jobCheckChanged(state, action);
+    case LoadingActions.LOAD_OPTIONS:
+      return action.payload;
     default:
       return state;
   }
