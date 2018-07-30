@@ -1,7 +1,7 @@
 {
   "name": "electron-jenkins",
   "productName": "ElectronJenkins",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Simple Jenkins Client on ElectronJS + .NET Core",
   "scripts": {
     "build": "concurrently \"npm run build-main\" \"npm run build-renderer\"",
@@ -52,8 +52,8 @@
       "package.json"
     ],
     "extraFiles": [
-      "app/dist/netcoreapp2.0/publish/**",
-      "!app/dist/netcoreapp2.0/publish/*.pdb",
+      "app/dist/api/**",
+      "!app/dist/api/*.pdb",
       "resources/*.png"
     ],
     "dmg": {

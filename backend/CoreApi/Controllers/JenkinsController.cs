@@ -74,7 +74,7 @@ namespace CoreApi.Controllers {
       var job = client.GetJob(name, token).Result;
 
       int? health = job.HealthReport.FirstOrDefault()?.Score;
-      var lastBuild = client.GetBuild(name, job.LastBuild.Number.ToString(), token).Result;
+      // var lastBuild = client.GetBuild(name, job.LastBuild.Number.ToString(), token).Result;
 
       string lastBuildResult = "UNKNOWN";
       if (job.LastBuild != null && job.LastSuccessfulBuild != null)

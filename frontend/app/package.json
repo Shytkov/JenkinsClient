@@ -1,7 +1,7 @@
 {
   "name": "electron-jenkins",
   "productName": "ElectronJenkins",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Simple Jenkins Client on ElectronJS + .NET Core",
   "main": "./main.prod.js",
   "author": {

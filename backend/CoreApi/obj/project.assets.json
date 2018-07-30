@@ -8275,11 +8275,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\JenkinsClient\\api\\CoreApi\\CoreApi.csproj",
+      "projectUniqueName": "D:\\Projects\\JenkinsClient\\backend\\CoreApi\\CoreApi.csproj",
       "projectName": "CoreApi",
-      "projectPath": "D:\\Projects\\JenkinsClient\\api\\CoreApi\\CoreApi.csproj",
+      "projectPath": "D:\\Projects\\JenkinsClient\\backend\\CoreApi\\CoreApi.csproj",
       "packagesPath": "C:\\Users\\Pavel\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\JenkinsClient\\api\\CoreApi\\obj\\",
+      "outputPath": "D:\\Projects\\JenkinsClient\\backend\\CoreApi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -8298,8 +8298,8 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "D:\\Projects\\JenkinsClient\\api\\Narochno.Jenkins\\src\\Narochno.Jenkins\\Narochno.Jenkins.csproj": {
-              "projectPath": "D:\\Projects\\JenkinsClient\\api\\Narochno.Jenkins\\src\\Narochno.Jenkins\\Narochno.Jenkins.csproj"
+            "D:\\Projects\\JenkinsClient\\backend\\Narochno.Jenkins\\src\\Narochno.Jenkins\\Narochno.Jenkins.csproj": {
+              "projectPath": "D:\\Projects\\JenkinsClient\\backend\\Narochno.Jenkins\\src\\Narochno.Jenkins\\Narochno.Jenkins.csproj"
             }
           }
         }

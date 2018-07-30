@@ -53,6 +53,8 @@ const getApiUrl = (port, func) => func ? `http://localhost:${port}/${func}` : `h
 const startApi = (port) => {
 
   let apipath = '';
+  console.log(__dirname);
+
   if(DEBUG) {
     apipath = path.join(__dirname, '.\\dist\\netcoreapp2.0\\CoreApi.dll');
     if (os.platform() === 'darwin') {
@@ -60,9 +62,9 @@ const startApi = (port) => {
     }
   }
   else {
-    apipath = path.join(__dirname, '..\\..\\app\\dist\\netcoreapp2.0\\publish\\CoreApi.dll');
+    apipath = path.join(__dirname, '..\\..\\app\\dist\\api\\CoreApi.dll');
     if (os.platform() === 'darwin') {
-      apipath = path.join(__dirname, '../../app/dist/netcoreapp2.0/publish/CoreApi.dll');
+      apipath = path.join(__dirname, '../../app/dist/api/CoreApi.dll');
     }
   }
   console.log('START API:', apipath);
@@ -278,10 +280,10 @@ app.on('ready', async () => {
     return false;
   });
 
-  // if (DEBUG) {
+  if (DEBUG) {
     const menuBuilder = new MenuBuilder(mainWindow);
     menuBuilder.buildMenu();
-  // }
+  }
 });
 
 

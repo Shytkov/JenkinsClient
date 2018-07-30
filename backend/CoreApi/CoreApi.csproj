@@ -8,11 +8,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>D:\Projects\JenkinsClient\electron\app\dist\</OutputPath>
+    <OutputPath>D:\Projects\JenkinsClient\frontend\app\dist</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>D:\Projects\JenkinsClient\electron\app\dist\</OutputPath>
+    <OutputPath>D:\Projects\JenkinsClient\frontend\app\dist</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
