@@ -29,8 +29,9 @@ module.exports = {
 
     let dir = __dirname;
     while(true) {
-      dir = path.join(dir, '../')
-      if(dir.endsWith('electron\\') || dir.length < 10)
+      dir = path.join(dir, '../');
+      console.log(dir);
+      if(dir.endsWith('fontend\\') || dir.length < 10)
         break;
     }
     return path.join(dir, './resources');
