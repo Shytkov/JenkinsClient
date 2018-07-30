@@ -19,16 +19,19 @@ export function goHome(history) {
 }
 
 export function pingApi() {
-  console.log('send to main', Constants.INITIALIZE_API_CHANEL);
-  ipcRenderer.send(Constants.INITIALIZE_API_CHANEL, Constants.INITIALIZE_API_CHANEL);
+  console.log('send to main', Constants.MAIN_THREAD_CHANNEL);
+  ipcRenderer.send(Constants.MAIN_THREAD_CHANNEL, Constants.INIT_API);
   return {
     type: PING_API
   };
 }
 
-export function loadOptions(options) {
+export function loadOptions() {
+
+  let options = Options.loadOptions();
+  if(!options) options = null;
   return {
     type: LOAD_OPTIONS,
-    payload: Options.loadOptions()
+    payload: options
   };
 }

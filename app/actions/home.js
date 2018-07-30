@@ -1,9 +1,11 @@
 // @flow
-// import {ToastNotification, Template} from 'electron-windows-notifications';
 import path from 'path';
+import { ipcRenderer } from  'electron';
 import { jobType } from "../types/home";
+import * as Constants from '../utils/Constants';
 import type { optionsStateType } from '../types/options';
 import Api from "../utils/Api";
+import * as Utils from '../utils/Utils';
 
 export const RELOAD_JOBS = 'RELOAD_JOBS';
 export const UPDATE_JOBS = 'UPDATE_JOBS';
@@ -23,6 +25,7 @@ export function updateJobs(jobs: Array<jobType>) {
     const updatedJobs = [];
     const promises = [];
     const notifications = [];
+    let hasRedBuilds = false;
 
     jobs.forEach(job => {
       promises.push(
@@ -31,10 +34,13 @@ export function updateJobs(jobs: Array<jobType>) {
                     if(shouldNotify(job, response.data))
                       notifications.push({
                         name: job.name,
+                        group: job.group,
                         url: response.data.LastBuild.Url,
                         number: response.data.LastBuild.Number,
                         status: response.data.LastBuild.Result
                       });
+                      
+                    if(!hasRedBuilds) hasRedBuilds = response.data.Color === 'red';
 
                     updatedJobs.push({
                       ...job,
@@ -64,6 +70,9 @@ export function updateJobs(jobs: Array<jobType>) {
     Promise.all(promises).then(() => {
       dispatch(getUpdateJobsDoneAction(updatedJobs));
       notifications.forEach(notification => showNotification(notification));
+      console.log('SEND TRAY', hasRedBuilds);
+      ipcRenderer.send(Constants.MAIN_THREAD_CHANNEL, Constants.SET_TRAY, hasRedBuilds);
+
       return null;
     }).catch((error) => {
       console.log('Error: ', error);
@@ -82,31 +91,22 @@ function showNotification(notification) {
   //   template: `<toast><visual><binding template="ToastText01"><text id="1">%s</text></binding></visual></toast>`,
   //   strings: ['Hi!']
   // });
-
   // toast.on('click', () => console.log('Clicked!'));
   // toast.show();
+
+  const icon = notification.status === 'SUCCESS' ? 'done1.png' : 'fire1.png';
+
   const notificationParams = {
     title: notification.status === 'SUCCESS' ? 'Successfull Build' : 'Failed Build',
-    body: notification.name,
-    icon: path.join(__dirname, notification.status === 'SUCCESS' ? '../resources/success1.png' : '../resources/failed1.png')
+    body: `${notification.group} -> ${notification.name}`,
+    icon: Utils.getResource(icon),
+    silent: true
   }
-  const toast = new Notification(notificationParams.title, notificationParams);
-  // toast.on('click', () => {
-  //   console.log('Click');
-  // });
+  // ipcRenderer.send(Constants.MAIN_THREAD_CHANNEL,
+  //   Constants.SHOW_NOTIFICATION,
+  //   notificationParams);
 
-  //  let strings = ['Hi from Electron'];
-  //  let template = new Template({
-  //    templateText: '<text>%s</text>'
-  //  });
-
-  // let notification = new ToastNotification({
-  //   appId: 'com.squirrel.PavelShytkov.ElectronJenkins',
-  //   template: template.getXML(),
-  //   strings: strings
-  // })
-  // notification.on('activated', () => console.log('Activated!'))
-  // notification.show();
+  new Notification(notificationParams.title, notificationParams);
 }
 
 function shouldNotify(job, updatedJobData) {

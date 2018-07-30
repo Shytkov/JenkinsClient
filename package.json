@@ -216,6 +216,7 @@
     "font-awesome": "^4.7.0",
     "history": "^4.7.2",
     "jquery": "^3.3.1",
+    "node-notifier": "^5.2.1",
     "popper.js": "^1.14.3",
     "react": "^16.4.0",
     "react-addons-update": "^15.6.2",

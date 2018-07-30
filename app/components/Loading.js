@@ -8,7 +8,6 @@ import * as Constants from '../utils/Constants';
 import type { optionsStateType } from '../types/options';
 
 type Props = {
-  options: optionsStateType,
   goHome: (history) => void,
   pingApi: () => void,
   loadOptions: () => void
@@ -22,14 +21,14 @@ export default class Loading extends Component<Props> {
   }
 
   componentDidMount() {
-    ipcRenderer.on(Constants.INITIALIZE_API_CHANEL, this.ipcListenerHandler)
+    ipcRenderer.on(Constants.MAIN_THREAD_CHANNEL, this.ipcListenerHandler)
 
     this.setLoadingState('Initialize application...');
     this.pingAsync();
   }
 
   componentWillUnmount() {
-    ipcRenderer.removeListener(Constants.INITIALIZE_API_CHANEL, this.ipcListenerHandler)
+    ipcRenderer.removeListener(Constants.MAIN_THREAD_CHANNEL, this.ipcListenerHandler)
   }
 
   setLoadingState(message: string) {
@@ -42,10 +41,10 @@ export default class Loading extends Component<Props> {
   ipcListener(event, name, arg) {
     console.log(event, name, arg);
 
-    if(name === Constants.INITIALIZE_API_CHANEL_START) {
+    if(name === Constants.INIT_API_START) {
       console.log("INITIALIZE API: START");
     }
-    if(name === Constants.INITIALIZE_API_CHANEL_DONE) {
+    if(name === Constants.INIT_API_DONE) {
       console.log("INITIALIZE API: DONE");
       // const apiUrl = arg;
       // Api.initialize(apiUrl);
@@ -53,7 +52,7 @@ export default class Loading extends Component<Props> {
       this.loadOptionsAsync()
           .then(() => this.goHome())
     }
-    if(name === Constants.INITIALIZE_API_CHANEL_ERROR) {
+    if(name === Constants.INIT_API_ERROR) {
       this.errorText = 'Cannot start the application. Error: API initialization failed.';
       this.setLoadingState('Initialize API: Failed');
       console.error("INITIALIZE API: ERROR!");
@@ -74,7 +73,7 @@ export default class Loading extends Component<Props> {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         this.setLoadingState('Load options...');
-        this.props.loadOptions(this.props.options);
+        this.props.loadOptions();
         resolve();
       }, 500);
     });

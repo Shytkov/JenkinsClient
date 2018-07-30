@@ -1,3 +1,6 @@
+import path from 'path';
+import os from 'os';
+
 module.exports = {
 
   validateUrl(value) {
@@ -21,4 +24,51 @@ module.exports = {
   getId () {
     return '_' + Math.random().toString(36).substr(2, 9);
   },
+
+  getDebugResourcePath() {
+
+    let dir = __dirname;
+    while(true) {
+      dir = path.join(dir, '../')
+      if(dir.endsWith('electron\\') || dir.length < 10)
+        break;
+    }
+    return path.join(dir, './resources');
+  },
+
+  getReleaseResourcePath(appInstance=null) {
+
+    console.log('getReleaseResourcePath')
+    let app = appInstance;
+    if(!app) {
+      app = require('electron').remote.app;
+    }
+
+    let dir = app.getAppPath();
+    console.log('getReleaseResourcePath', dir)
+    while(true) {
+      dir = path.join(dir, '../')
+      if(dir.endsWith('resources\\') || dir.length < 10)
+        break;
+    }
+    return dir;
+  },
+
+  
+
+  getResource(name) {
+    const DEBUG = process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
+    if(DEBUG) {
+      return path.join(this.getDebugResourcePath(), name);
+    }
+    return path.join(this.getReleaseResourcePath(), name);
+  },
+
+  getResourceMain(name, app) {
+    const DEBUG = process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
+    if(DEBUG) {
+      return this.getResource(name);
+    }
+    return path.join(this.getReleaseResourcePath(app), name);
+  }
 };

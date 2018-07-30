@@ -1,13 +1,13 @@
 // @flow
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Row, Col, Button } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
 
 import Settings from 'react-feather/dist/icons/settings';
 import Loader from 'react-feather/dist/icons/loader';
 
-
 import HomeJobListContainer from '../containers/HomeJobListContainer'
+import Help from './Help';
 import type { jobType } from '../types/home';
 import type { optionsStateType } from '../types/options';
 
@@ -25,27 +25,12 @@ export default class Home extends Component<Props> {
 
   componentDidMount() {
     this.props.reloadJobs(this.props.options);
-
-    // const notification = new ToastNotification({
-    //   appId: 'com.devart.jenkinsclient',
-    //   template: `<toast><visual><binding template="ToastText01"><text id="1">%s</text></binding></visual></toast>`,
-    //   strings: ['Hi!']
-    // });
-    // notification.on('activated', () => console.log('Activated!'))
-    // notification.show();
-
-    
-    // const notification1 = {
-    //   title: 'Basic Notification',
-    //   body: 'Short message part'
-    // }
-    // const myNotification = new window.Notification(notification1.title, notification1)
   }
 
   componentDidUpdate() {
     if(this.props.jobs.length > 0 && !this.timerId) {
       this.props.updateJobs(this.props.jobs);
-      this.startTimer(30000); // 30 sec
+      this.startTimer(10000); // 30 sec
     }
   }
 
@@ -70,18 +55,6 @@ export default class Home extends Component<Props> {
     this.props.updateJobs(this.props.jobs);
   }
 
-  // grant() {
-  //   if(!window.Notification) {
-  //     console.log('Notifications are not supported.');
-  //   }
-  //   else {
-  //     Notification.requestPermission()
-  //                 .then((permition) => {
-  //                                        console.log('Notification permition:', permition);
-  //                                      });
-  //   }
-  // }
-
   render() {
     let loading = '';
     if(this.props.loading) 
@@ -89,6 +62,10 @@ export default class Home extends Component<Props> {
         <div className={styles.stateImage}>
           <Loader className={`${styles.loader} text-primary`} />
         </div>);
+
+    let help = '';
+    if(!this.props.jobs || this.props.jobs.length == 0)
+        help = <Help />;
 
     return (
       <div>
@@ -103,11 +80,10 @@ export default class Home extends Component<Props> {
                 </Link>
               </Col>
             </Row>
+            {help}
           </Container>
         </div>
         <HomeJobListContainer />
-        {/* <Button onClick={this.grant}>Grant</Button>
-        <Button onClick={this.notify}>Notify</Button> */}
       </div>
     );
   }

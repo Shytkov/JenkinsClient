@@ -11,6 +11,10 @@ const defaultState = {
 };
 
 const reloadJobs = (state: homeStateType, action: actionType) => {
+
+  if(!action.payload)
+    return state;
+
   const {
     urls
   } = action.payload;

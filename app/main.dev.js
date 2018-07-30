@@ -10,14 +10,16 @@
  *
  * @flow
  */
-import { app, BrowserWindow, ipcMain, Tray, Menu } from 'electron';
+import { app, BrowserWindow, ipcMain, Tray, Menu, Notification } from 'electron';
 import ChildProcess from 'child_process';
 import os from 'os';
 import path from 'path';
 import axios from 'axios';
+import notifier from 'node-notifier';
 
 import MenuBuilder from './menu';
 import * as Constants from './utils/Constants';
+import * as Utils from './utils/Utils';
 
 
 let mainWindow = null;
@@ -75,14 +77,14 @@ const stopApi = () => {
   }
 }
 
-const ipcListener = (event, args) => {
+const ipcListener = (event, arg1, arg2) => {
 
-  console.log('IPC RECEIVE:', args);
+  console.log('IPC RECEIVE:', arg1, arg2);
 
-  if(args === Constants.INITIALIZE_API_CHANEL) {
+  if(arg1 === Constants.INIT_API) {
 
     if(!apiProcess) {
-      mainWindow.webContents.send(Constants.INITIALIZE_API_CHANEL, Constants.INITIALIZE_API_CHANEL_ERROR);
+      mainWindow.webContents.send(Constants.MAIN_THREAD_CHANNEL, Constants.INIT_API_ERROR);
       return;
     }
 
@@ -90,7 +92,7 @@ const ipcListener = (event, args) => {
     let waiting = false;
     let attempts = 5;
   
-    mainWindow.webContents.send(Constants.INITIALIZE_API_CHANEL, Constants.INITIALIZE_API_CHANEL_START);
+    mainWindow.webContents.send(Constants.MAIN_THREAD_CHANNEL, Constants.INIT_API_START);
     let timer = setInterval(() => {
   
       if(waiting)
@@ -106,7 +108,7 @@ const ipcListener = (event, args) => {
       .then((result) => {
         clearInterval(timer);
         console.log('API PING: SUCCESS');
-        mainWindow.webContents.send(Constants.INITIALIZE_API_CHANEL, Constants.INITIALIZE_API_CHANEL_DONE, getApiUrl(apiPort));
+        mainWindow.webContents.send(Constants.MAIN_THREAD_CHANNEL, Constants.INIT_API_DONE, getApiUrl(apiPort));
       })
       .catch((error) => {
         console.log('API PING: ERROR');
@@ -115,8 +117,37 @@ const ipcListener = (event, args) => {
   
     }, 500, 'pingApi');
   }
+  else if (arg1 === Constants.ACTIVATE_WINDOW) {
+    mainWindow.show();
+  }
+  else if (arg1 === Constants.SET_TRAY) {
+    if(tray)
+      tray.destroy();
+    tray = installTray(arg2);
+  }
+  else if (arg1 === Constants.SHOW_NOTIFICATION) {
+    console.log('SHOW SHOW_NOTIFICATION', arg2);
+    const notificationParams = arg2;
+    new Notification('HELLO!', {
+      title: 'Hello',
+      icon: Utils.getResourceMain(notificationParams.icon, app)
+    });
 
-
+    // const notificationParams = arg2;
+    // notifier.notify({
+    //     title: notificationParams.title,
+    //     message: notificationParams.message,
+    //     icon: Utils.getResourceMain(notificationParams.icon, app),
+    //     contentImage: Utils.getResourceMain(notificationParams.icon, app),
+    //     sound: notificationParams.sound,
+    //     actions: ['1', '2'],
+    //     wait: true
+    //   },
+    //   function(err, response) {
+    //     console.log('notify', err, response);
+    //   }
+    // );
+  }
 }
 
 const setAppUserModelId = () => {
@@ -126,13 +157,10 @@ const setAppUserModelId = () => {
   app.setAppUserModelId(appUserModelId);
 }
 
-const installTray = () => {
+const installTray = (ihHot: boolean) => {
 
-  const iconName = process.platform === 'win32' ? 'windows-icon.png' : 'iconTemplate.png'
-  let iconPath = DEBUG ? path.join(__dirname, '..\\resources', iconName) : path.join(__dirname, '..\\', iconName)
-  if (os.platform() === 'darwin') {
-    iconPath = DEBUG ? path.join(__dirname, '../resources', iconName) : path.join(__dirname, '../', iconName)
-  }
+  const iconName = ihHot ? 'app-hot-icon.png' : 'app-icon.png';
+  const iconPath = Utils.getResourceMain(iconName, app);
 
   console.log('INITIALIZE TRAY', iconPath);
 
@@ -184,7 +212,7 @@ app.on('browser-window-created', () => {
   catch(error) {
     console.error(error);
   }
-  ipcMain.on(Constants.INITIALIZE_API_CHANEL, ipcListener);
+  ipcMain.on(Constants.MAIN_THREAD_CHANNEL, ipcListener);
   console.log('IPC LISTENER SUBSCRIBED');
 });
 
@@ -195,7 +223,11 @@ app.on('ready', async () => {
   }
 
   setAppUserModelId();
-  if(!tray) tray = installTray();
+  tray = installTray(false);
+
+  notifier.on('click', () => {
+    mainWindow.show();
+  });
 
   let options = {
     show: false,

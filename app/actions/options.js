@@ -39,7 +39,13 @@ export function saveOptions(options: optionsStateType) {
 
 export function loadOptions() {
   console.log(`LOAD OPTIONS from ${store.path}`);
-  return store.get('options');
+  let result = store.get('options');
+  if(!result)
+    result = {
+      urls: []
+    };
+
+  return result;
 }
 
 export function loadJobs(url: string, index: number) {
