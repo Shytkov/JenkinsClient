@@ -1,0 +1,12 @@
+D:\Projects\JenkinsClient\electron\app\dist\netcoreapp2.0\CoreApi.deps.json
+D:\Projects\JenkinsClient\electron\app\dist\netcoreapp2.0\CoreApi.runtimeconfig.json
+D:\Projects\JenkinsClient\electron\app\dist\netcoreapp2.0\CoreApi.runtimeconfig.dev.json
+D:\Projects\JenkinsClient\electron\app\dist\netcoreapp2.0\CoreApi.dll
+D:\Projects\JenkinsClient\electron\app\dist\netcoreapp2.0\CoreApi.pdb
+D:\Projects\JenkinsClient\api\CoreApi\obj\Release\netcoreapp2.0\CoreApi.csprojResolveAssemblyReference.cache
+D:\Projects\JenkinsClient\api\CoreApi\obj\Release\netcoreapp2.0\CoreApi.csproj.CoreCompileInputs.cache
+D:\Projects\JenkinsClient\api\CoreApi\obj\Release\netcoreapp2.0\CoreApi.AssemblyInfoInputs.cache
+D:\Projects\JenkinsClient\api\CoreApi\obj\Release\netcoreapp2.0\CoreApi.AssemblyInfo.cs
+D:\Projects\JenkinsClient\api\CoreApi\obj\Release\netcoreapp2.0\CoreApi.csproj.CopyComplete
+D:\Projects\JenkinsClient\api\CoreApi\obj\Release\netcoreapp2.0\CoreApi.dll
+D:\Projects\JenkinsClient\api\CoreApi\obj\Release\netcoreapp2.0\CoreApi.pdb

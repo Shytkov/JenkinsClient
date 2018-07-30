@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CoreApi": {
+      "commandName": "Project",
+      "commandLineArgs": "--server.urls http://localhost:5100"
+    }
+  }
+}
