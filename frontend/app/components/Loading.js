@@ -1,11 +1,8 @@
 // @flow
 import React, { Component } from 'react';
 import { ipcRenderer } from  'electron';
-import { Link } from 'react-router-dom';
 import { Card, CardBody, CardTitle, CardSubtitle, CardText } from 'reactstrap';
-import Api from '../utils/Api';
 import * as Constants from '../utils/Constants';
-import type { optionsStateType } from '../types/options';
 
 type Props = {
   goHome: (history) => void,
@@ -70,7 +67,7 @@ export default class Loading extends Component<Props> {
   }
 
   loadOptionsAsync() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         this.setLoadingState('Load options...');
         this.props.loadOptions();

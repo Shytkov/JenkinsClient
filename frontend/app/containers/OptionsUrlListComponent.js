@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import OptionsUrlList from '../components/OptionsUrlList';
 import * as OptionsActions from '../actions/options';
 
-function mapStateToProps(state) {
+ function mapStateToProps(state) {
   return {
     urls: state.options.urls,
   };

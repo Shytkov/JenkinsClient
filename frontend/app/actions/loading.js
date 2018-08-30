@@ -1,6 +1,5 @@
 // @flow
 import { ipcRenderer } from  'electron';
-import thunk from 'redux-thunk';
 import * as Constants from '../utils/Constants';
 import * as Options from '../actions/options';
 

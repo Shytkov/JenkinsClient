@@ -13,6 +13,16 @@
     padding-right: 0px;
 }
 
+.valigncenter {
+    align-items: center;
+    display: inline-flex;
+}
+
+.buildButton {
+    padding: 0 !important; 
+    height: 24px !important;
+}
+
 @keyframes blink{
     0%{opacity: 0;}
     50%{opacity: .8;}

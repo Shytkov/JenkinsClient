@@ -1,6 +1,7 @@
 // @flow
 import * as Actions from '../actions/loading'
-let defaultState = {
+
+const defaultState = {
 };
 
 export default function loadingReducer(
@@ -8,11 +9,5 @@ export default function loadingReducer(
   action: actionType) {
 
   console.log('Loading Reducer', action);
-
-  switch (action.type) {
-    case Actions.LOAD_OPTIONS:
-    break;
-  }
-
   return state;
 }

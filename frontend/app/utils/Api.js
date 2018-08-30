@@ -18,6 +18,14 @@ class JenkinsApi {
     return this.getRequest('get-jobs', jenkinsUrl);
   }
 
+  getJobParametersAsync(name: string, jenkinsUrl: string) {
+    return this.getRequest('get-job-parameters', jenkinsUrl, { name });
+  }
+
+  buildJobAsync(name: string, jenkinsUrl: string, parameters) {
+    return this.getRequest('build-job', jenkinsUrl, { name, parameters });
+  }
+
   getMasterAsync(jenkinsUrl: string) {
     return this.getRequest('get-master', jenkinsUrl);
   }

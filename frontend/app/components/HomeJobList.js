@@ -2,15 +2,16 @@
 import { shell } from 'electron';
 
 import React, { Component } from 'react';
-import { Container, Row, Col, Badge } from 'reactstrap';
+import { Container, Row, Col, Badge, Button } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import * as Icon from 'react-feather';
+
 import Utils from '../utils/Utils';
 import styles from './HomeJobList.css';
 
-// const { shell } = require('electron').shell;
-
 type Props = {
-  jobs: Array<jobType>
+  jobs: Array<jobType>,
+  onBuild: (job) => void
 };
 
 export default class HomeJobList extends Component<Props> {
@@ -31,16 +32,22 @@ export default class HomeJobList extends Component<Props> {
 
   renderHealth(job) {
 
-    if (job.health < 0)
+    const health = job.health;
+    const healthTooltip = `${health}%`;
+    if (health < 0)
       return <div className={styles.healthImage} />;
 
-    if (job.health > 0 && job.health <= 30)
-      return <Icon.CloudLightning className='text-secondary' />;
-    if (job.health > 30 && job.health <= 50)
-      return <Icon.CloudRain className='text-secondary' />;
-    if (job.health > 50 && job.health <= 70)
-      return <Icon.Cloud className='text-info' />;
-    return <Icon.Sun className='text-warning' />;
+    if (health >= 0 && health < 30)
+      return <div data-toggle="tooltip" data-placement="top" title={healthTooltip}><Icon.CloudRain className='text-secondary' /></div>;
+    if (health >= 30 && health <= 40)
+      return <div data-toggle="tooltip" data-placement="top" title={healthTooltip}><Icon.CloudDrizzle className='text-secondary' /></div>;
+    if (health > 40 && health <= 60)
+      return <div data-toggle="tooltip" data-placement="top" title={healthTooltip}><Icon.Cloud className='text-info' /></div>;
+    return <div data-toggle="tooltip" data-placement="top" title={healthTooltip}><Icon.Sun className='text-warning' /></div>;
+  }
+
+  buildClick(job: jobType) {
+    this.props.onBuild(job);
   }
 
   renderItem(item) {
@@ -50,7 +57,9 @@ export default class HomeJobList extends Component<Props> {
 
     let building = '';
     if (job.building)
-      building = <Badge className={`${styles.building} badge-info`}>Building</Badge>;
+      building = <Badge className={`${styles.building} badge-info vcenter`}>Building</Badge>;
+
+    const buildButton = job.color === '' ? '' : <Button className={`${styles.buildButton}`} color="link" onClick={() => this.buildClick(item)}><Icon.PlayCircle size={24} /></Button>
 
     let title = job.name;
     if (job.joburl)
@@ -60,19 +69,20 @@ export default class HomeJobList extends Component<Props> {
       <Row key={job.id}>
         <Col xs="auto">{state}</Col>
         <Col xs="auto">{health}</Col>
-        <Col>{title}</Col>
-        <Col>{building}</Col>
+        <Col className={styles.valigncenter}>{title}</Col>
+        <Col className={styles.valigncenter}>{building}</Col>
+        <Col xs="auto">{buildButton}</Col>
       </Row>
     );
   }
 
   renderGroup(jobs, group) {
-    if(group.length === 0)
+    if (group.length === 0)
       return;
 
     const sorted = jobs.sort((a, b) => {
-      if(a.name < b.name) return -1;
-      if(a.name > b.name) return 1;
+      if (a.name < b.name) return -1;
+      if (a.name > b.name) return 1;
       return 0;
     });
 
@@ -87,11 +97,12 @@ export default class HomeJobList extends Component<Props> {
   }
 
   render() {
-    if(!this.props.jobs)
+    if (!this.props.jobs)
       return <div>No items</div>;
     const groups = Utils.groupBy(this.props.jobs, key => key.group);
+    const groupsAsc = new Map([...groups.entries()].sort());
     const groupContent = [];
-    groups.forEach((jobs, group) => groupContent.push(this.renderGroup(jobs, group)));
+    groupsAsc.forEach((jobs, group) => groupContent.push(this.renderGroup(jobs, group)));
     return <div>{groupContent.map(item => item)}</div>;
   }
 }

@@ -7,7 +7,7 @@ function mapStateToProps(state) {
   return {
     loading: state.home.loading,
     jobs: state.home.jobs,
-    options: state.options,
+    options: state.options
   };
 }
 

@@ -18,7 +18,8 @@ type Props = {
   jobs: Array<jobType>,
   options: optionsStateType,
   updateJobs: (jobs: Array<jobType>) => void,
-  reloadJobs: (options: optionsStateType) => void
+  reloadJobs: (options: optionsStateType) => void,
+  buildJob: (job: jobType) => void
 };
 
 export default class Home extends Component<Props> {
@@ -30,7 +31,7 @@ export default class Home extends Component<Props> {
   componentDidUpdate() {
     if(this.props.jobs.length > 0 && !this.timerId) {
       this.props.updateJobs(this.props.jobs);
-      this.startTimer(10000); // 30 sec
+      this.startTimer(10000); // 10 sec
     }
   }
 
@@ -83,7 +84,7 @@ export default class Home extends Component<Props> {
             {help}
           </Container>
         </div>
-        <HomeJobListContainer />
+        <HomeJobListContainer onBuild={(job) => this.props.buildJob(job, this.props.history)} />
       </div>
     );
   }

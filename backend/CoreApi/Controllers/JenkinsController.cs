@@ -62,6 +62,74 @@ namespace CoreApi.Controllers {
       return Json(result);
     }
 
+    [HttpGet("get-job-parameters")]
+    public IActionResult GetJobParameters(string jenkinsUrl, string name) {
+
+      JenkinsConfig config = new JenkinsConfig() {
+        JenkinsUrl = jenkinsUrl
+      };
+
+      JenkinsClient client = new JenkinsClient(config);
+      CancellationToken token = new CancellationToken();
+      var job = client.GetJob(name, token).Result;
+
+      try {
+        List<JenkinsJobParameter> parameters = new List<JenkinsJobParameter>();
+        var par = job.Actions.Where(a => a["parameterDefinitions"] != null).FirstOrDefault();
+        foreach (var item in par["parameterDefinitions"].Children()) {
+          var p = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonJobParameter>(item.ToString());
+          parameters.Add(new JenkinsJobParameter() {
+            Name = p.Name,
+            DataType = p.Type,
+            DefaultValue = p.DefaultParameterValue.Value
+          });
+        }
+        return Json(parameters);
+
+      }
+      catch {
+      }
+      return Json(false);
+    }
+
+
+    public class Parameter {
+      public string Key {
+        get;
+        set;
+      }
+
+      public string Value {
+        get;
+        set;
+      }
+    }
+
+    [HttpGet("build-job")]
+    public IActionResult BuildJob(string jenkinsUrl, string name, string parameters) {
+
+      JenkinsConfig config = new JenkinsConfig() {
+        JenkinsUrl = jenkinsUrl
+      };
+
+      JenkinsClient client = new JenkinsClient(config);
+      CancellationToken token = new CancellationToken();
+      var result = Newtonsoft.Json.JsonConvert.DeserializeObject<Parameter[]>(parameters);
+
+      Dictionary<string, string> param = new Dictionary<string, string>(result.Length);
+      foreach (var item in result)
+        param.Add(item.Key, item.Value);
+
+
+      try {
+        client.BuildProjectWithParameters(name, param, token).Wait();
+      }
+      catch(Exception e) {
+        return Json(false);
+      }
+      return Json(true);
+    }
+
     [HttpGet("get-job")]
     public IActionResult GetJob(string jenkinsUrl, string name) {
 

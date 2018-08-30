@@ -7,7 +7,7 @@ import type { actionType } from '../types/basic';
 import type { optionsStateType, optionsUrlType } from '../types/options';
 import Utils from '../utils/Utils';
 
-let defaultState = {
+const defaultState = {
   urls: []
 };
 

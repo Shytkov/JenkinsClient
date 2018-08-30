@@ -55,7 +55,13 @@ export default class Options extends Component<Props> {
           <InputGroup>
             <Input invalid={!this.state.urlValid} innerRef={(ref) => this.urlInput = ref} onChange={this.urlInputChange.bind(this)} />
             <InputGroupAddon addonType="append">
-              <Button color="primary" disabled={this.addButtonDisabled()} onClick={this.addUrl.bind(this)}>Add</Button>
+              <Button
+                color="primary" 
+                disabled={this.addButtonDisabled()}
+                onClick={this.addUrl.bind(this)}
+              >
+                Add
+              </Button>
             </InputGroupAddon>
           </InputGroup>
         </FormGroup>

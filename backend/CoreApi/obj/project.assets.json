@@ -8275,31 +8275,33 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\JenkinsClient\\backend\\CoreApi\\CoreApi.csproj",
+      "projectUniqueName": "d:\\Projects\\JenkinsClient\\backend\\CoreApi\\CoreApi.csproj",
       "projectName": "CoreApi",
-      "projectPath": "D:\\Projects\\JenkinsClient\\backend\\CoreApi\\CoreApi.csproj",
+      "projectPath": "d:\\Projects\\JenkinsClient\\backend\\CoreApi\\CoreApi.csproj",
       "packagesPath": "C:\\Users\\Pavel\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\JenkinsClient\\backend\\CoreApi\\obj\\",
+      "outputPath": "d:\\Projects\\JenkinsClient\\backend\\CoreApi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
         "C:\\Users\\Pavel\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 18.1.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\DevExpress 18.1\\Components\\System\\Components\\Packages": {},
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "D:\\Projects\\JenkinsClient\\backend\\Narochno.Jenkins\\src\\Narochno.Jenkins\\Narochno.Jenkins.csproj": {
-              "projectPath": "D:\\Projects\\JenkinsClient\\backend\\Narochno.Jenkins\\src\\Narochno.Jenkins\\Narochno.Jenkins.csproj"
+            "d:\\Projects\\JenkinsClient\\backend\\Narochno.Jenkins\\src\\Narochno.Jenkins\\Narochno.Jenkins.csproj": {
+              "projectPath": "d:\\Projects\\JenkinsClient\\backend\\Narochno.Jenkins\\src\\Narochno.Jenkins\\Narochno.Jenkins.csproj"
             }
           }
         }

@@ -1,5 +1,4 @@
 // @flow
-import path from 'path';
 import { ipcRenderer } from  'electron';
 import { jobType } from "../types/home";
 import * as Constants from '../utils/Constants';
@@ -10,6 +9,7 @@ import * as Utils from '../utils/Utils';
 export const RELOAD_JOBS = 'RELOAD_JOBS';
 export const UPDATE_JOBS = 'UPDATE_JOBS';
 export const UPDATE_JOBS_DONE = 'UPDATE_JOBS_DONE';
+export const BUILD_JOB = 'BUILD_JOB';
 
 export function reloadJobs(options: optionsStateType) {
   return {
@@ -80,6 +80,13 @@ export function updateJobs(jobs: Array<jobType>) {
   }
 }
 
+export function buildJob(job: jobType, history) {
+  return dispatch => {
+    dispatch(getBuidJobAction(job));
+    history.push('/buildjob');
+  };
+}
+
 function showNotification(notification) {
 
   // url: response.data.LastBuild.Url,
@@ -105,7 +112,6 @@ function showNotification(notification) {
   // ipcRenderer.send(Constants.MAIN_THREAD_CHANNEL,
   //   Constants.SHOW_NOTIFICATION,
   //   notificationParams);
-
   new Notification(notificationParams.title, notificationParams);
 }
 
@@ -114,12 +120,19 @@ function shouldNotify(job, updatedJobData) {
   if(!job.lastBuild) {
     return false;
   }
-  return job.lastBuild.Result != updatedJobData.LastBuild.Result;
+  return job.lastBuild.Result !== updatedJobData.LastBuild.Result;
 }
 
 function getUpdateJobsAction() {
   return {
     type: UPDATE_JOBS,
+  };
+}
+
+function getBuidJobAction(job) {
+  return {
+    type: BUILD_JOB,
+    payload: job
   };
 }
 

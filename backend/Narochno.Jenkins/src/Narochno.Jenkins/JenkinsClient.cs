@@ -111,12 +111,17 @@ namespace Narochno.Jenkins
             {
                 var p = new {parameter = parameters.Select(x => new {name = x.Key, value = x.Value}).ToArray()};
                 var json = JsonConvert.SerializeObject(p);
-                var content = new FormUrlEncodedContent(new[]
-                {
-                    new KeyValuePair<string, string>("json", json)
-                });
 
-                return httpClient.PostAsync(jenkinsConfig.JenkinsUrl + "/job/" + job + "/build", content, ctx);
+                List<KeyValuePair<string, string>> contentList = new List<KeyValuePair<string, string>>();
+                foreach (var item in parameters) {
+                  string value = item.Value.ToLower() == "true" ? "on" : "off";
+                  contentList.Add(new KeyValuePair<string, string>(item.Key, value));
+                }
+                contentList.Add(new KeyValuePair<string, string>("json", json));
+                contentList.Add(new KeyValuePair<string, string>("Jenkins-Crumb", "f27c75e43ce66a968a6df45bcd2a4154"));
+                var content = new FormUrlEncodedContent(contentList);
+
+                return httpClient.PostAsync(jenkinsConfig.JenkinsUrl + "/job/" + job + "/build?delay=0sec", content, ctx);
             });
 
             response.EnsureSuccessStatusCode();
